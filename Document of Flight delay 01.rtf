@@ -1,0 +1,481 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset1 Segoe UI Symbol;}}
+{\*\generator Riched20 10.0.17763}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 Skip to content\par
+Product\par
+Solutions\par
+Open Source\par
+Pricing\par
+Search\par
+Sign in\par
+Sign up\par
+etherisc-legacy\par
+/\par
+flightDelay-legacy\par
+Public\par
+Code\par
+Issues\par
+3\par
+Pull requests\par
+3\par
+Actions\par
+Projects\par
+Security\par
+Insights\par
+Rework deployment scripts\par
+ master (#4)\par
+ v1.0\par
+@christoph2806\par
+christoph2806 committed on Oct 21, 2017 \par
+1 parent 1d72877\par
+commit 8acbe0a\par
+Show file tree Hide file tree\par
+Showing 14 changed files with 329 additions and 27 deletions.\par
+Filter changed files\par
+  4  \par
+.eslintrc.yml\par
+@@ -28,9 +28,11 @@ rules:\par
+          imports: never\par
+          exports: never\par
+          functions: ignore\par
+    padded-blocks:\par
+      0\par
+\par
+globals:\par
+    artifacts: true\par
+    web3: true\par
+    contract: true\par
+    assert: true\par
+    assert: true\par
+  80  \par
+bin/testrpc.js\par
+@@ -6,29 +6,61 @@ const log = require('../util/logger');\par
+const options = \{\par
+    port: 9545,\par
+    accounts: [\par
+        // 0 - deployer\par
+        \{ secretKey: '0xfbdab455fa027cfcc5b847b4541f0d9b3ee9f176bcc2dd60acdbb26c30e00000', balance: 1000000000000000000000000, \},\par
+        // 1 - new owner & FD.Owner\par
+        \{ secretKey: '0xcba39ec99dfca0db448b4bafad7049b7a504c6557a53c65bb4ef0cc219300001', balance: 1000000000000000000000000, \},\par
+        // 2 - FD.Funder\par
+        \{ secretKey: '0x7e2b1d0ae9f7bb8e935ac215ab42e8342bd31830a570cf08c9c2a2a5a4400002', balance: 1000000000000000000000000, \},\par
+        // 3 - FD.CustomersAdmin\par
+        \{ secretKey: '0xee49329dbe74c4d2866a7d0278b3110749fa03e7404021d2d15810c1b8f00003', balance: 1000000000000000000000000, \},\par
+        // 4 - FD.Emeregency\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00004', balance: 1000000000000000000000000, \},\par
+        // 5 - Customer\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00005', balance: 1000000000000000000000, \},\par
+        // 6 - Bridge deployer\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00006', balance: 1000000000000000000000000, \},\par
+        // 7 - Test 1\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00007', balance: 1000000000000000000000000, \},\par
+        // 8 - Test 2\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00008', balance: 1000000000000000000000000, \},\par
+        // 9 - Test 3\par
+        \{ secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00009', balance: 1000000000000000000000000, \},\par
+        // 0 - deployer                 0x3deee88a871433a5709c93ef63eb04f4eace0ac5\par
+        \{\par
+            secretKey: '0xfbdab455fa027cfcc5b847b4541f0d9b3ee9f176bcc2dd60acdbb26c30e00000',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 1 - new owner & FD.Owner     0x2e781b96a14485cdbf7e9457b71165558b1f7d3a\par
+        \{\par
+            secretKey: '0xcba39ec99dfca0db448b4bafad7049b7a504c6557a53c65bb4ef0cc219300001',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 2 - FD.Funder                0x14be1f9cd06d3f349eb6d8cf7de951684473259f\par
+        \{\par
+            secretKey: '0x7e2b1d0ae9f7bb8e935ac215ab42e8342bd31830a570cf08c9c2a2a5a4400002',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 3 - FD.CustomersAdmin        0x39b39e40a4b1ee645f7c1db320683a9569103172\par
+        \{\par
+            secretKey: '0xee49329dbe74c4d2866a7d0278b3110749fa03e7404021d2d15810c1b8f00003',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 4 - FD.Emeregency            0xe2d9511ea485455d41565dabc42b418c7bc9a227\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00004',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 5 - Customer                 0xb013ca96eb504cd1b23414d3b6b8bffbae9a4762\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00005',\par
+            balance: 1000000000000000000000,\par
+        \},\par
+        // 6 - Bridge deployer          0x3e2d627980a50742f604e36d6f1b799948095d23\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00006',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 7 - Test 1                   0xb99d717dfacbc4bd89285b47734e0dfe67e80bf9\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00007',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 8 - Test 2                   0x7ac8134f559aaa178618dbc98e552aa82dd0bd7c\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00008',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+        // 9 - Test 3                   0xebf9a8df6f1adc7d18dbc49b7b656287b770b1bf\par
+        \{\par
+            secretKey: '0x945377fad41211126252e15f9390dd20ffb43f4d637eda54b8e6b9c10eb00009',\par
+            balance: 1000000000000000000000000,\par
+        \},\par
+    ],\par
+    debug: true,\par
+    logger: \{ log: log.info, \},\par
+    debug: false,\par
+    logger: \{\par
+        log: log.info,\par
+    \},\par
+    blocktime: 0,\par
+\};\par
+\par
+@@ -42,9 +74,7 @@ TestRPC\par
+\par
+            log.info('Accounts:');\par
+            Object.keys(state.accounts).forEach((address, index) =>\par
+                log.info(\par
+                    `($\{index\}) $\{address\}$\{state.isUnlocked(address) === false ? ' \f1\u-10179?\u-8942?\f0 ' : ''\}, pKey: $\{state.accounts[address].secretKey.toString('hex')\}`)\par
+            );\par
+                log.info(`($\{index\}) $\{address\}$\{state.isUnlocked(address) === false ? ' \f1\u-10179?\u-8942?\f0 ' : ''\}, pKey: $\{state.accounts[address].secretKey.toString('hex')\}`));\par
+\par
+            log.info(`Listening on $\{(options.hostname || 'localhost')\}:$\{options.port\}`);\par
+        \}\par
+ 37  \par
+deployment.js\par
+@@ -0,0 +1,37 @@\par
+module.exports = \{\par
+    networks: \{\par
+        mainnet: \{\par
+            addressResolver: '0x63338bB37Bc3A0d55d2E9505F11E56c613b51494',\par
+            FD: \{\par
+                deployer: '',\par
+                owner: '',\par
+                funder: '0xb5771324A8209c4b581a5f1e5c0DD48a9ABA2a59', // multisig\par
+                CustomersAdmin: '',\par
+                Emergency: '',\par
+            \},\par
+        \},\par
+        kovan: \{\par
+            addressResolver: '0x48fbda035c53d7d4e7a0ac8adc1fd88e541e7336',\par
+            FD: \{\par
+                deployer: '',\par
+                owner: '',\par
+                funder: '0x74c90c06e20113c9e628f9ce374611db28da1f93', // multisig\par
+                CustomersAdmin: '',\par
+                Emergency: '',\par
+            \},\par
+        \},\par
+        development: \{\par
+            addressResolver: '0x48fbda035c53d7d4e7a0ac8adc1fd88e541e7336',\par
+            FD: \{\par
+                deployer: '0x3deee88a871433a5709c93ef63eb04f4eace0ac5',\par
+                owner: '0x2e781b96a14485cdbf7e9457b71165558b1f7d3a',\par
+                funder: '0x74c90c06e20113c9e628f9ce374611db28da1f93',\par
+                CustomersAdmin: '0x39b39e40a4b1ee645f7c1db320683a9569103172',\par
+                Emergency: '0xe2d9511ea485455d41565dabc42b418c7bc9a227',\par
+            \},\par
+        \},\par
+    \},\par
+\};\par
+\par
+\par
+\par
+ 19  \par
+migrations-available/501_deploy_FlightDelayController.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayController = artifacts.require('FlightDelayController.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayController contract');\par
+\par
+    return deployer.deploy(FlightDelayController);\par
+\par
+\};\par
+ 19  \par
+migrations-available/502_deploy_FlightDelayAccessController.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayAccessController = artifacts.require('FlightDelayAccessController.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayAccessController contract');\par
+\par
+    return deployer.deploy(FlightDelayAccessController);\par
+\par
+\};\par
+ 19  \par
+migrations-available/503_deploy_FlightDelayDatabase.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayDatabase = artifacts.require('FlightDelayDatabase.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayDatabase contract');\par
+\par
+    return deployer.deploy(FlightDelayDatabase);\par
+\par
+\};\par
+ 19  \par
+migrations-available/504_deploy_FlightDelayLedger.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayLedger = artifacts.require('FlightDelayLedger.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayLedger contract');\par
+\par
+    return deployer.deploy(FlightDelayLedger);\par
+\par
+\};\par
+ 19  \par
+migrations-available/505_deploy_FlightDelayNewPolicy.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayNewPolicy = artifacts.require('FlightDelayNewPolicy.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayNewPolicy contract');\par
+\par
+    return deployer.deploy(FlightDelayNewPolicy);\par
+\par
+\};\par
+ 19  \par
+migrations-available/506_deploy_FlightDelayUnderwrite.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayUnderwrite = artifacts.require('FlightDelayUnderwrite.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayUnderwrite contract');\par
+\par
+    return deployer.deploy(FlightDelayUnderwrite);\par
+\par
+\};\par
+ 19  \par
+migrations-available/507_deploy_FlightDelayPayout.js\par
+@@ -0,0 +1,19 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayPayout = artifacts.require('FlightDelayPayout.sol');\par
+\par
+module.exports = (deployer, network, accounts) => \{\par
+\par
+    log.info('Deploy FlightDelayPayout contract');\par
+\par
+    return deployer.deploy(FlightDelayPayout);\par
+\par
+\};\par
+ 39  \par
+migrations-available/510_deploy_registerContracts.js\par
+@@ -0,0 +1,39 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const deployment = require('../deployment.js');\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayController = artifacts.require('FlightDelayController.sol');\par
+const FlightDelayAccessController = artifacts.require('FlightDelayAccessController.sol');\par
+const FlightDelayDatabase = artifacts.require('FlightDelayDatabase.sol');\par
+const FlightDelayLedger = artifacts.require('FlightDelayLedger.sol');\par
+const FlightDelayNewPolicy = artifacts.require('FlightDelayNewPolicy.sol');\par
+const FlightDelayUnderwrite = artifacts.require('FlightDelayUnderwrite.sol');\par
+const FlightDelayPayout = artifacts.require('FlightDelayPayout.sol');\par
+\par
+module.exports = (deployer, network) =>\par
+\par
+    deployer.then(async () => \{\par
+\par
+        const controller = await FlightDelayController.deployed();\par
+\par
+        log.info('Register Admin Addresses');\par
+        await controller.registerContract(deployment.networks[network].FD.funder, 'FD.Funder', false);\par
+        await controller.registerContract(deployment.networks[network].FD.CustomersAdmin, 'FD.CustomersAdmin', false);\par
+        await controller.registerContract(deployment.networks[network].FD.Emergency, 'FD.Emergency', false);\par
+\par
+        log.info('Register contracts');\par
+        await controller.registerContract(FlightDelayAccessController.address, 'FD.AccessController', true);\par
+        await controller.registerContract(FlightDelayDatabase.address, 'FD.Database', true);\par
+        await controller.registerContract(FlightDelayLedger.address, 'FD.Ledger', true);\par
+        await controller.registerContract(FlightDelayNewPolicy.address, 'FD.NewPolicy', true);\par
+        await controller.registerContract(FlightDelayUnderwrite.address, 'FD.Underwrite', true);\par
+        await controller.registerContract(FlightDelayPayout.address, 'FD.Payout', true);\par
+\par
+    \});\par
+ 23  \par
+migrations-available/510_deploy_transferOwnership.js\par
+@@ -0,0 +1,23 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const deployment = require('../deployment.js');\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayController = artifacts.require('FlightDelayController.sol');\par
+\par
+module.exports = (deployer, network) =>\par
+\par
+    deployer.then(async () => \{\par
+\par
+        const controller = await FlightDelayController.deployed();\par
+\par
+        log.info('Transfer ownership');\par
+        await controller.transferOwnership(deployment.networks[network].FD.owner);\par
+\par
+    \});\par
+ 23  \par
+migrations-available/511_deploy_setAllContracts.js\par
+@@ -0,0 +1,23 @@\par
+/**\par
+ * Deployment script for FlightDelay\par
+ *\par
+ * @author Christoph Mussenbrock\par
+ * @description Deploy FlightDelayController\par
+ * @copyright (c) 2017 etherisc GmbH\par
+ *\par
+ */\par
+const deployment = require('../deployment.js');\par
+const log = require('../util/logger');\par
+\par
+const FlightDelayController = artifacts.require('FlightDelayController.sol');\par
+\par
+module.exports = (deployer, network) =>\par
+\par
+    deployer.then(async () => \{\par
+\par
+        const controller = await FlightDelayController.deployed();\par
+\par
+        log.info('Set all Contracts');\par
+        await controller.setAllContracts(\{ from: deployment.networks[network].FD.owner, \});\par
+\par
+    \});\par
+ 17  \par
+resources.yml\par
+@@ -1,10 +1,25 @@\par
+migrations:\par
+#    - 1_initial_migration.js\par
+    - 302_deploy_Other.js\par
+#    - 302_deploy_Other.js\par
+#    - 401_deploy_AddressResolver.js\par
+#    - 900_deploy_set_contracts.js\par
+#    - 901_deploy_fund_contracts.js\par
+#    - 999_deploy_show_contracts.js\par
+#        - 506_deploy_FlightDelayUnderwrite.js\par
+#    - 299_deploy_finish.js\par
+#    - 401_deploy_AddressResolver.js\par
+#    - 501_deploy_FlightDelayController.js\par
+#    - 502_deploy_FlightDelayAccessController.js\par
+#    - 503_deploy_FlightDelayDatabase.js\par
+#    - 504_deploy_FlightDelayLedger.js\par
+#    - 505_deploy_FlightDelayNewPolicy.js\par
+#    - 506_deploy_FlightDelayUnderwrite.js\par
+#    - 507_deploy_FlightDelayPayout.js\par
+    - 510_deploy_registerContracts.js\par
+#    - 900_deploy_set_contracts.js\par
+#    - 901_deploy_fund_contracts.js\par
+#    - 999_deploy_show_contracts.js\par
+\par
+test:\par
+    - logformatter.js\par
+    - Test_Deploy.js\par
+0 comments on commit 8acbe0a\par
+Please sign in to comment.\par
+Footer\par
+\'a9 2023 GitHub, Inc.\par
+Footer navigation\par
+Terms\par
+Privacy\par
+Security\par
+Status\par
+Docs\par
+Contact GitHub\par
+Pricing\par
+API\par
+Training\par
+Blog\par
+About\par
+Rework deployment scripts \'b7 etherisc-legacy/flightDelay-legacy@8acbe0a \'b7 GitHub\par
+}
+ 

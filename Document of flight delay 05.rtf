@@ -1,0 +1,613 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.17763}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9\{\par
+  "contract_name": "FlightDelayConstants",\par
+  "abi": [\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_customer",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strCarrierFlightNumber",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethPremium",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyApplied",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics0",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics1",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics2",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics3",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics4",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics5",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyAccepted",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyPaidOut",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyExpired",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyDeclined",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyManualPayout",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_recipient",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_from",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogSendFunds",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_sender",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_to",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogReceiveFunds",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogSendFail",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexQueryId",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_oraclizeUrl",\par
+          "type": "string"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_oraclizeTime",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogOraclizeCall",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexQueryId",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_result",\par
+          "type": "string"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexProof",\par
+          "type": "bytes"\par
+        \}\par
+      ],\par
+      "name": "LogOraclizeCallback",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyState",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_stateTime",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_stateMessage",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogSetState",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_address",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_externalId",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogExternal",\par
+      "type": "event"\par
+    \}\par
+  ],\par
+  "unlinked_binary": \par
+  "networks": \{\},\par
+  "schema_version": "0.0.5",\par
+  "updated_at": 1509103519107\par
+\}\{\par
+  "contract_name": "FlightDelayConstants",\par
+  "abi": [\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_customer",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strCarrierFlightNumber",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethPremium",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyApplied",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics0",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics1",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics2",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics3",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics4",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_statistics5",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyAccepted",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyPaidOut",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyExpired",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyDeclined",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogPolicyManualPayout",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_recipient",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_from",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogSendFunds",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_sender",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_to",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "ethAmount",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogReceiveFunds",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "strReason",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogSendFail",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexQueryId",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_oraclizeUrl",\par
+          "type": "string"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_oraclizeTime",\par
+          "type": "uint256"\par
+        \}\par
+      ],\par
+      "name": "LogOraclizeCall",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexQueryId",\par
+          "type": "bytes32"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_result",\par
+          "type": "string"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "hexProof",\par
+          "type": "bytes"\par
+        \}\par
+      ],\par
+      "name": "LogOraclizeCallback",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyState",\par
+          "type": "uint8"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_stateTime",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_stateMessage",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogSetState",\par
+      "type": "event"\par
+    \},\par
+    \{\par
+      "anonymous": false,\par
+      "inputs": [\par
+        \{\par
+          "indexed": false,\par
+          "name": "_policyId",\par
+          "type": "uint256"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_address",\par
+          "type": "address"\par
+        \},\par
+        \{\par
+          "indexed": false,\par
+          "name": "_externalId",\par
+          "type": "bytes32"\par
+        \}\par
+      ],\par
+      "name": "LogExternal",\par
+      "type": "event"\par
+    \}\par
+  ],\par
+  "unlinked_binary": ",\par
+  "networks": \{\},\par
+  "schema_version": "0.0.5",\par
+  "updated_at": 1509103519107\par
+\}\par
+}
+ 
